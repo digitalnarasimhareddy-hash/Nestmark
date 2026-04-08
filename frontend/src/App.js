@@ -11,6 +11,12 @@ import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import { Toaster } from "./components/ui/toaster";
 
+// Import Pages
+import ServicesPage from "./pages/ServicesPage";
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import BlogPage from "./pages/BlogPage";
+
 const Home = () => {
   return (
     <div className="min-h-screen">
@@ -32,6 +38,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/blog" element={<BlogPage />} />
         </Routes>
       </BrowserRouter>
       <Toaster />
