@@ -1,10 +1,57 @@
-import React from 'react';
-import { mockServices } from '../data/mock';
+import React, { useState, useEffect } from 'react';
+import { apiService } from '../services/api';
 import * as LucideIcons from 'lucide-react';
 import { Button } from './ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 
 const ServicesSection = () => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const data = await apiService.getServices();
+        setServices(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load services. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 text-cyan-600 animate-spin mx-auto mb-4" />
+            <p className="text-gray-600 text-lg">Loading services...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <p className="text-red-600 text-lg">{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       {/* Background Decoration */}
@@ -33,12 +80,12 @@ const ServicesSection = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {mockServices.map((service, index) => {
+          {services.map((service, index) => {
             const Icon = LucideIcons[service.icon] || LucideIcons.Sparkles;
             return (
               <div
                 key={service.id}
-                className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 cursor-pointer"
+                className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 cursor-pointer card-3d"
                 style={{
                   animation: `fade-in-up 0.6s ease-out ${index * 0.1}s backwards`,
                   transformStyle: 'preserve-3d'
@@ -53,7 +100,7 @@ const ServicesSection = () => {
                 <div className="relative z-10">
                   {/* Icon Container */}
                   <div className="relative mb-6">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-lg group-hover:shadow-cyan-500/50 transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl shadow-lg group-hover:shadow-cyan-500/50 transform group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 pulse-glow">
                       <Icon className="w-8 h-8 text-white" />
                     </div>
                     {/* Floating Dot */}
@@ -85,7 +132,7 @@ const ServicesSection = () => {
         {/* CTA Button */}
         <div className="text-center">
           <Button
-            className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 px-8 py-6 text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 group"
+            className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 px-8 py-6 text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 group magnetic-button"
           >
             See All Services
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />

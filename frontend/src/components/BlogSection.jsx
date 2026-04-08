@@ -1,9 +1,56 @@
-import React from 'react';
-import { mockBlogs } from '../data/mock';
-import { Calendar, Clock, User, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { apiService } from '../services/api';
+import { Calendar, Clock, User, ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
 
 const BlogSection = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        const data = await apiService.getBlogs(4);
+        setBlogs(data);
+        setError(null);
+      } catch (err) {
+        setError('Failed to load blogs. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="relative py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Loader2 className="w-12 h-12 text-cyan-600 animate-spin mx-auto mb-4" />
+            <p className="text-gray-600 text-lg">Loading blogs...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="relative py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <p className="text-red-600 text-lg">{error}</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="relative py-24 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
       {/* Background Decoration */}
@@ -31,10 +78,10 @@ const BlogSection = () => {
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {mockBlogs.map((blog, index) => (
+          {blogs.map((blog, index) => (
             <div
               key={blog.id}
-              className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border border-gray-100 hover:border-cyan-300 cursor-pointer"
+              className="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border border-gray-100 hover:border-cyan-300 cursor-pointer card-3d"
               style={{
                 animation: `fade-in-up 0.8s ease-out ${index * 0.2}s backwards`
               }}
@@ -43,8 +90,8 @@ const BlogSection = () => {
               <div className="relative h-64 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 overflow-hidden">
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-500"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-white text-6xl font-bold opacity-20 group-hover:opacity-30 transform group-hover:scale-110 transition-all duration-500">
-                    {blog.id}
+                  <div className="text-white text-6xl font-bold opacity-20 group-hover:opacity-30 transform group-hover:scale-110 transition-all duration-500 tilt-animation">
+                    {index + 1}
                   </div>
                 </div>
                 {/* Floating Badge */}
@@ -67,7 +114,7 @@ const BlogSection = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="w-4 h-4" />
-                    <span>{blog.readTime}</span>
+                    <span>{blog.readTime || blog.read_time}</span>
                   </div>
                 </div>
 
@@ -97,7 +144,7 @@ const BlogSection = () => {
         {/* View All Button */}
         <div className="text-center mt-12">
           <Button
-            className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 px-8 py-6 text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 group"
+            className="bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 px-8 py-6 text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 group magnetic-button"
           >
             View All Blogs
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />

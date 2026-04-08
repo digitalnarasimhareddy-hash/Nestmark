@@ -10,6 +10,8 @@ from typing import List
 import uuid
 from datetime import datetime, timezone
 
+# Import routes
+from routes import services, blogs, contacts
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -20,11 +22,15 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
 # Create the main app without a prefix
-app = FastAPI()
+app = FastAPI(title="NestMark Solutions API", version="1.0.0")
 
 # Create a router with the /api prefix
 api_router = APIRouter(prefix="/api")
 
+# Set database for routes
+services.set_db(db)
+blogs.set_db(db)
+contacts.set_db(db)
 
 # Define Models
 class StatusCheck(BaseModel):
@@ -40,7 +46,7 @@ class StatusCheckCreate(BaseModel):
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "NestMark Solutions API - Ready", "version": "1.0.0"}
 
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
@@ -65,6 +71,11 @@ async def get_status_checks():
             check['timestamp'] = datetime.fromisoformat(check['timestamp'])
     
     return status_checks
+
+# Include feature routers
+api_router.include_router(services.router, prefix="/services", tags=["Services"])
+api_router.include_router(blogs.router, prefix="/blogs", tags=["Blogs"])
+api_router.include_router(contacts.router, prefix="/contact", tags=["Contacts"])
 
 # Include the router in the main app
 app.include_router(api_router)
