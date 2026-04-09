@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { apiService } from '../services/api';
 import * as LucideIcons from 'lucide-react';
 import { Button } from './ui/button';
@@ -26,6 +27,23 @@ const ServicesSection = () => {
 
     fetchServices();
   }, []);
+
+  const getServiceSlug = (title) => {
+    const slugMap = {
+      'Performance Marketing': '/services/performance-marketing',
+      'Search Engine Optimization': '/services/seo',
+      'Social Media Marketing': '/services/social-media-marketing',
+      'SEM Services (PPC, Google Adwords, Display Ads)': '/services/sem',
+      'Meta Ads (Facebook Ads, Instagram Ads)': '/services/meta-ads',
+      'PR Marketing': '/services/pr-marketing',
+      'Website Development': '/services/website-development',
+      'Influencer Marketing': '/services/influencer-marketing',
+      'Competitor Analysis': '/services/competitor-analysis',
+      'Omnichannel Marketing': '/services/omnichannel-marketing',
+      'Analytical Tools': '/services/analytical-tools'
+    };
+    return slugMap[title] || '/services';
+  };
 
   if (loading) {
     return (
@@ -83,9 +101,10 @@ const ServicesSection = () => {
           {services.map((service, index) => {
             const Icon = LucideIcons[service.icon] || LucideIcons.Sparkles;
             return (
-              <div
+              <Link
                 key={service.id}
-                className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 cursor-pointer card-3d"
+                to={getServiceSlug(service.title)}
+                className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 cursor-pointer card-3d block"
                 style={{
                   animation: `fade-in-up 0.6s ease-out ${index * 0.1}s backwards`,
                   transformStyle: 'preserve-3d'
@@ -124,7 +143,7 @@ const ServicesSection = () => {
 
                 {/* Corner Decoration */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-cyan-400/10 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </div>
+              </Link>
             );
           })}
         </div>
