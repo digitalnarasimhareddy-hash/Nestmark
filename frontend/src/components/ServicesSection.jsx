@@ -26,7 +26,7 @@ const ServicesSection = () => {
     };
 
     fetchServices();
-  }, []);
+  }, []); // Empty dependency array is correct - only fetch once on mount
 
   const getServiceSlug = (title) => {
     const slugMap = {

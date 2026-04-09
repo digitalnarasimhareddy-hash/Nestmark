@@ -13,7 +13,7 @@ const Navbar = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, []); // Empty dependency array is correct - event listener setup once
 
   const navLinks = [
     { name: 'Home', path: '/' },

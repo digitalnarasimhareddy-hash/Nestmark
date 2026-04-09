@@ -24,7 +24,7 @@ const BlogSection = () => {
     };
 
     fetchBlogs();
-  }, []);
+  }, []); // Empty dependency array is correct - only fetch once on mount
 
   if (loading) {
     return (

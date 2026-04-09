@@ -38,7 +38,7 @@ const WhyChooseSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {mockStats.map((stat, index) => (
                 <div
-                  key={index}
+                  key={stat.label}
                   className="text-center p-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 transform hover:scale-110 hover:-translate-y-2 transition-all duration-300"
                   style={{
                     animation: `scale-in 0.6s ease-out ${index * 0.2}s backwards`
@@ -63,7 +63,7 @@ const WhyChooseSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
             {mockFeatures.map((feature, index) => (
               <div
-                key={index}
+                key={feature.title}
                 className="group relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border border-gray-100 hover:border-cyan-300"
                 style={{
                   animation: `fade-in-up 0.6s ease-out ${index * 0.1}s backwards`
@@ -118,7 +118,7 @@ const WhyChooseSection = () => {
               }
             ].map((challenge, index) => (
               <div
-                key={index}
+                key={`challenge-${index}`}
                 className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transform hover:scale-105 transition-all duration-300 border border-gray-100"
               >
                 <h4 className="text-lg font-bold text-gray-900 mb-3">{challenge.title}</h4>

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Mail, MapPin, Clock, Send, Loader2 } from 'lucide-react';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Textarea } from '../components/ui/textarea';
+import { ArrowLeft } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import { apiService } from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { ContactInfoSection } from '../components/ContactInfo';
+import { ContactForm } from '../components/ContactForm';
 
 const ContactPage = () => {
   const { toast } = useToast();
@@ -28,7 +27,7 @@ const ContactPage = () => {
     setLoading(true);
 
     try {
-      const response = await apiService.submitContact(formData);
+      await apiService.submitContact(formData);
       
       toast({
         title: "Message Sent Successfully!",
@@ -36,7 +35,6 @@ const ContactPage = () => {
         duration: 5000,
       });
 
-      // Reset form
       setFormData({ firstName: '', phone: '', email: '', message: '' });
     } catch (error) {
       toast({
@@ -92,165 +90,13 @@ const ContactPage = () => {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div className="space-y-8">
-              {/* Contact Details */}
-              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 card-3d">
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/50 transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500 pulse-glow">
-                      <Phone className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">Connect</h3>
-                    <a href="tel:+917975676409" className="text-gray-600 hover:text-cyan-600 transition-colors text-lg">
-                      +91 7975676409
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 card-3d">
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/50 transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500 pulse-glow">
-                      <Mail className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">Support</h3>
-                    <a href="mailto:marketing@nestmarksolutions.com" className="text-gray-600 hover:text-cyan-600 transition-colors text-lg break-all">
-                      marketing@nestmarksolutions.com
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 card-3d">
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/50 transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500 pulse-glow">
-                      <MapPin className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">Location</h3>
-                    <p className="text-gray-600 text-lg">
-                      HSR Layout, Bengaluru
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-all duration-500 border border-gray-100 hover:border-cyan-300 card-3d">
-                <div className="flex items-start gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-cyan-500/50 transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-500 pulse-glow">
-                      <Clock className="w-8 h-8 text-white" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2 group-hover:text-cyan-600 transition-colors">Hours</h3>
-                    <p className="text-gray-600 text-lg">
-                      9:30 AM - 6:30 PM
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="bg-white rounded-3xl p-10 shadow-xl border border-gray-100">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">
-                Send us a Message
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Your First Name *
-                  </label>
-                  <Input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    required
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    className="w-full px-4 py-6 rounded-xl border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all duration-300"
-                    placeholder="Enter your first name"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-6 rounded-xl border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all duration-300"
-                    placeholder="Enter your phone number"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Your Email Address *
-                  </label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-6 rounded-xl border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all duration-300"
-                    placeholder="Enter your email"
-                    disabled={loading}
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                    Your Message *
-                  </label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    required
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="w-full px-4 py-4 rounded-xl border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 transition-all duration-300 min-h-32"
-                    placeholder="Tell us about your project"
-                    disabled={loading}
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white hover:from-cyan-700 hover:to-blue-700 px-8 py-6 text-lg rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed magnetic-button"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 w-5 h-5 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      Submit Your Inquiry
-                      <Send className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                    </>
-                  )}
-                </Button>
-              </form>
-            </div>
+            <ContactInfoSection />
+            <ContactForm 
+              formData={formData}
+              loading={loading}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+            />
           </div>
         </div>
       </section>

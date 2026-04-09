@@ -18,7 +18,7 @@ const HeroSection = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, []); // Empty dependency array is correct - event listener setup once
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
@@ -70,7 +70,7 @@ const HeroSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
           {heroCards.map((card, index) => (
             <div
-              key={index}
+              key={card.title}
               className="group relative bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 hover:bg-white/10 hover:border-cyan-400/50 cursor-pointer"
               style={{
                 animation: `slide-up 0.8s ease-out ${index * 0.2}s backwards`,

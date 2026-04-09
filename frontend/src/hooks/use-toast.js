@@ -143,7 +143,7 @@ function useToast() {
         listeners.splice(index, 1)
       }
     };
-  }, [state])
+  }, []) // Empty dependency array is correct - listener registration once
 
   return {
     ...state,

@@ -52,7 +52,7 @@ const Footer = () => {
                 const Icon = social.icon;
                 return (
                   <a
-                    key={index}
+                    key={social.label}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -73,7 +73,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               {usefulLinks.map((link, index) => (
-                <li key={index}>
+                <li key={link.name}>
                   <Link
                     to={link.path}
                     className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 flex items-center group"

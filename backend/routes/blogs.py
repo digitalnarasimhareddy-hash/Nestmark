@@ -21,7 +21,7 @@ async def get_blogs(
     """Get all blogs with optional filters"""
     try:
         query = {}
-        if featured is not None:
+        if featured != None:
             query["featured"] = featured
         
         blogs = await db.blogs.find(query).limit(limit).to_list(limit)

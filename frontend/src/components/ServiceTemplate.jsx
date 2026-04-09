@@ -78,7 +78,7 @@ const ServiceTemplate = ({ title, subtitle, description, icon: Icon, benefits, b
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {benefits.map((benefit, index) => (
                 <div
-                  key={index}
+                  key={`benefit-${benefit.substring(0, 20)}`}
                   className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 border border-gray-100 hover:border-cyan-300 card-3d"
                   style={{
                     animation: `fade-in-up 0.6s ease-out ${index * 0.1}s backwards`

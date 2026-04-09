@@ -45,7 +45,7 @@ const AboutSection = () => {
             const Icon = feature.icon;
             return (
               <div
-                key={index}
+                key={feature.title}
                 className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-2 transition-all duration-500 border border-gray-100 hover:border-cyan-200"
                 style={{
                   animation: `fade-in-up 0.8s ease-out ${index * 0.2}s backwards`
@@ -87,7 +87,7 @@ const AboutSection = () => {
             const Icon = stat.icon;
             return (
               <div
-                key={index}
+                key={stat.label}
                 className="text-center p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 border border-gray-100 hover:border-cyan-200 group"
                 style={{
                   animation: `scale-in 0.5s ease-out ${index * 0.1 + 0.8}s backwards`

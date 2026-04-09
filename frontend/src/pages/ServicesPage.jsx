@@ -27,8 +27,7 @@ const ServicesPage = () => {
     };
 
     fetchServices();
-    window.scrollTo(0, 0);
-  }, []);
+  }, []); // Empty dependency array is correct - only fetch once on mount
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
